@@ -14,7 +14,7 @@
     <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"></script>
 
     <!-- checkbox table -->
-    <script src="/js/jquery.simple-checkbox-table.min.js"></script>
+    <script th:src="@{/js/jquery.simple-checkbox-table.min.js}"></script>
     <link th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
@@ -39,12 +39,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>hoge</td>
-                            <td>hoge@hoge.com</td>
-                        </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>1</td>
+                        <td>hoge</td>
+                        <td>hoge@hoge.com</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -53,66 +53,63 @@
 </div>
 
 <script th:inline="javascript">
-    let users = [];
-    let organizationId = 1;
     $(document).ready(function () {
+        initializeTreeView();
+    });
+
+    function initializeTreeView() {
         $.ajax({
             url: 'tree-data',
             type: 'GET',
             dataType: 'json',
-            success: function (data) {
-                console.log(JSON.stringify(data))
-                // tree 그리기
-                $('#tree-view').bstreeview({
-                    data: data
-                });
+        }).done(function (data) {
+            drawTreeView(data);
+            addClickEvent(data);
+        }).fail(function () {
+            alert('Tree Data Error!');
+        });
+    }
 
-                // click 이벤트 추가
-                $('.list-group-item').on('click', function () {
-                    const targetId = this.id;
-                    console.log(targetId);
-                    const nodes = findNodesById(data, targetId);
-                    console.log(nodes);
-                    if (nodes === null) {
-                        // 하위 조직이 없는 경우
-                        $.ajax({
-                            url: 'user-data/' + targetId,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function (data) {
-                                $('#dataTable tbody').empty();
-                                console.log(JSON.stringify(data))
-                                for (var i = 0; i < data.length; i++) {
-                                    var user = data[i]
-                                    $('#dataTable tbody').append(
-                                        '<tr>' +
-                                        '<td><input type="checkbox"></td>' +
-                                        '<td>' + user.organizationId + '</td>' +
-                                        '<td>' + user.username + '</td>' +
-                                        '<td>' + user.email + '</td>' +
-                                        '<td>' + user.createdAt + '</td>' +
-                                        '</tr>');
-                                }
-                                users = data;
-                            },
-                            error: function () {
-                                alert('User Data Error!');
-                            }
-                        })
-                    }
+    function drawTreeView(data) {
+        $('#tree-view').bstreeview({
+            data: data,
+        });
+    }
 
-                })
-            },
-            error: function () {
-                alert('Tree Data Error!');
+    function addClickEvent(data) {
+        $('.list-group-item').on('click', function () {
+            const nodes = findNodesById(data, this.id);
+            if (nodes === null) {
+                loadUserData(this.id);
             }
         })
-        $("table").simpleCheckboxTable({
-            onCheckedStateChanged: function ($checkbox) {
-                console.log($checkbox);
+    }
+
+    function loadUserData(targetId) {
+        $.ajax({
+            url: 'user-data/' + targetId,
+            type: 'GET',
+            dataType: 'json'
+        }).done(function (data) {
+            // table 비우기
+            $('#dataTable tbody').empty();
+
+            // table 채우기
+            for (var i = 0; i < data.length; i++) {
+                var user = data[i]
+                $('#dataTable tbody').append(
+                    '<tr>' +
+                    '<td><input type="checkbox"></td>' +
+                    '<td>' + user.organizationId + '</td>' +
+                    '<td>' + user.username + '</td>' +
+                    '<td>' + user.email + '</td>' +
+                    '<td>' + user.createdAt + '</td>' +
+                    '</tr>');
             }
+        }).fail(function () {
+            alert('User Data Error!');
         });
-    });
+    }
 
     function findNodesById(nodes, targetId) {
         for (let i = 0; i < nodes.length; i++) {
@@ -132,7 +129,6 @@
                 }
             }
         }
-
         // 해당 id를 찾지 못했을 경우
         return null;
     }
