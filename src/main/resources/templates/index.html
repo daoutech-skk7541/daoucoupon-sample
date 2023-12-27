@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <!-- jquery -->
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <!-- bstreeview -->
+    <link th:href="@{/node_modules/bstreeview/dist/css/bstreeview.min.css}" rel="stylesheet">
+    <script th:src="@{/node_modules/bstreeview/dist/js/bstreeview.min.js}"></script>
+    <!-- bootstrap -->
+    <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- checkbox table -->
+    <script src="/js/jquery.simple-checkbox-table.min.js"></script>
+    <link th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</head>
+
+<body>
+<h1>Tree View Example</h1>
+<div>
+    <div id="container">
+        <div class="organization-box">
+            <div id="tree-view" class="organization"></div>
+        </div>
+        <div class="organization-detail-box">
+            <div class="organization-detail">
+                <div id="user-data"></div>
+                <table id="dataTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>조직ID</th>
+                        <th>Name</th>
+                        <th>e-mail</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>hoge</td>
+                            <td>hoge@hoge.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    let users = [];
+    let organizationId = 1;
+    $(document).ready(function () {
+        $.ajax({
+            url: 'tree-data',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(JSON.stringify(data))
+                // tree 그리기
+                $('#tree-view').bstreeview({
+                    data: data
+                });
+
+                // click 이벤트 추가
+                $('.list-group-item').on('click', function () {
+                    const targetId = this.id;
+                    console.log(targetId);
+                    const nodes = findNodesById(data, targetId);
+                    console.log(nodes);
+                    if (nodes === null) {
+                        // 하위 조직이 없는 경우
+                        $.ajax({
+                            url: 'user-data/' + targetId,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#dataTable tbody').empty();
+                                console.log(JSON.stringify(data))
+                                for (var i = 0; i < data.length; i++) {
+                                    var user = data[i]
+                                    $('#dataTable tbody').append(
+                                        '<tr>' +
+                                        '<td><input type="checkbox"></td>' +
+                                        '<td>' + user.organizationId + '</td>' +
+                                        '<td>' + user.username + '</td>' +
+                                        '<td>' + user.email + '</td>' +
+                                        '<td>' + user.createdAt + '</td>' +
+                                        '</tr>');
+                                }
+                                users = data;
+                            },
+                            error: function () {
+                                alert('User Data Error!');
+                            }
+                        })
+                    }
+
+                })
+            },
+            error: function () {
+                alert('Tree Data Error!');
+            }
+        })
+        $("table").simpleCheckboxTable({
+            onCheckedStateChanged: function ($checkbox) {
+                console.log($checkbox);
+            }
+        });
+    });
+
+    function findNodesById(nodes, targetId) {
+        for (let i = 0; i < nodes.length; i++) {
+            const currentNode = nodes[i];
+
+            if (currentNode.id === targetId) {
+                // 특정 id 값을 가진 노드를 찾으면 해당 노드의 nodes 값을 반환
+                return currentNode.nodes;
+            }
+
+            if (currentNode.nodes && currentNode.nodes.length > 0) {
+                // 현재 노드에 하위 노드가 있다면 재귀적으로 검색
+                const nestedNodes = findNodesById(currentNode.nodes, targetId);
+
+                if (nestedNodes) {
+                    return nestedNodes; // 하위 노드에서 찾았으면 반환
+                }
+            }
+        }
+
+        // 해당 id를 찾지 못했을 경우
+        return null;
+    }
+</script>
+
+</body>
+
+</html>
+
+<style>
+    #container {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .organization-box {
+        margin: 10px;
+        width: 300px;
+        height: 500px;
+        border: 1px solid #E9EBEE;
+        float: left;
+        box-sizing: border-box;
+    }
+
+    .organization {
+        box-sizing: border-box;
+    }
+
+    .organization-detail {
+        margin: 10px;
+        width: 60%;
+        float: left;
+        box-sizing: border-box;
+    }
+
+    .organization-detail input {
+        width: 50%;
+        box-sizing: border-box;
+    }
+
+    .bstreeview {
+        border: none;
+    }
+
+    .list-group-item {
+        border: none;
+    }
+</style>
