@@ -76,6 +76,7 @@ function initializeTreeView() {
     .fail(() => {
       alert("Tree Data Error!");
     });
+  const abc = 0;
 }
 
 $(document).ready(() => {
