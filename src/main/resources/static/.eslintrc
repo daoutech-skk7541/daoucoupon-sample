@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "plugins": ["import", "react", "jsx-a11y", "html", "prettier"],
+  "extends": ["plugin:import/recommended","airbnb","jquery", "prettier"],
+  "rules": {
+    "linebreak-style": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jquery": true,
+    "es6": true
+  },
+  "ignorePatterns": ["dist", "public"]
+}
