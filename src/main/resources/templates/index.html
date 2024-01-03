@@ -1,100 +1,104 @@
 <!doctype html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <!-- jquery -->
-    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <!-- bstreeview -->
-    <link th:href="@{/node_modules/bstreeview/dist/css/bstreeview.min.css}" rel="stylesheet">
-    <script th:src="@{/node_modules/bstreeview/dist/js/bstreeview.min.js}"></script>
-    <!-- bootstrap -->
-    <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"></script>
+  <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Bootstrap demo</title>
+      <!-- jquery -->
+      <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+      <!-- bstreeview -->
+      <link
+        th:href="@{/node_modules/bstreeview/dist/css/bstreeview.min.css}"
+        rel="stylesheet"
+      />
+      <script
+        th:src="@{/node_modules/bstreeview/dist/js/bstreeview.min.js}"
+      ></script>
+      <!-- bootstrap -->
+      <script
+        th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"
+      ></script>
 
-    <!-- checkbox table -->
-    <script th:src="@{/js/jquery.simple-checkbox-table.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/treeview.js}"></script>
+      <!-- checkbox table -->
+      <script th:src="@{/js/jquery.simple-checkbox-table.min.js}"></script>
+      <script type="text/javascript" th:src="@{/js/treeview.js}"></script>
 
-    <link th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-</head>
+      <link
+        th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"
+        rel="stylesheet"
+      />
+      <link
+        rel="stylesheet"
+        href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      />
+    </head>
 
-<body>
-<h1>Tree View Example</h1>
-<div>
-    <div id="container">
-        <div class="organization-box">
+    <body>
+      <h1>Tree View Example</h1>
+      <div>
+        <div id="container">
+          <div class="organization-box">
             <div id="tree-view" class="organization"></div>
-        </div>
-        <div class="organization-detail-box">
+          </div>
+          <div class="organization-detail-box">
             <div class="organization-detail">
-                <div id="user-data"></div>
-                <table id="dataTable">
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>조직ID</th>
-                        <th>Name</th>
-                        <th>e-mail</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>1</td>
-                        <td>hoge</td>
-                        <td>hoge@hoge.com</td>
-                    </tr>
-                    </tbody>
-                </table>
+              <div id="user-data"></div>
+              <table id="dataTable">
+                <thead>
+                  <tr>
+                    <!--  tree view header by js -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- tree view content by js-->
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    </body>
+  </html>
 
-</body>
-
-</html>
-
-<style>
+  <style>
     #container {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .organization-box {
-        margin: 10px;
-        width: 300px;
-        height: 500px;
-        border: 1px solid #E9EBEE;
-        float: left;
-        box-sizing: border-box;
+      margin: 10px;
+      width: 300px;
+      height: 500px;
+      border: 1px solid #e9ebee;
+      float: left;
+      box-sizing: border-box;
     }
 
     .organization {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
 
     .organization-detail {
-        margin: 10px;
-        width: 60%;
-        float: left;
-        box-sizing: border-box;
+      margin: 10px;
+      width: 60%;
+      float: left;
+      box-sizing: border-box;
     }
 
     .organization-detail input {
-        width: 50%;
-        box-sizing: border-box;
+      width: 50%;
+      box-sizing: border-box;
     }
 
     .bstreeview {
-        border: none;
+      border: none;
     }
 
     .list-group-item {
-        border: none;
+      border: none;
     }
-</style>
+  </style>
+</html>

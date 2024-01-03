@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.daoucoupon.mapper.CompanyMapper">
+    <!-- 모든 사용자 가져오기 -->
+    <select id="getCompanyById" resultType="com.example.daoucoupon.company.model.Company">
+        SELECT * FROM company WHERE id = #{id}
+    </select>
+</mapper>
