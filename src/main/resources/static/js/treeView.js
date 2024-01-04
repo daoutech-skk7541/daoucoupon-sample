@@ -31,9 +31,10 @@ function addCheckAllEvent() {
   // set checkbox event
   $("#checkAll").click(() => {
     if ($("#checkAll").is(":checked")) {
-      $("input[name=tree-body]").prop("checked", true)
+      // check and trigger change event
+      $("input[name=tree-body]").prop("checked", true).trigger("change")
     } else {
-      $("input[name=tree-body]").prop("checked", false)
+      $("input[name=tree-body]").prop("checked", false).trigger("change")
     }
   })
 
