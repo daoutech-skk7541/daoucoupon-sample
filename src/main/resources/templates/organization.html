@@ -20,9 +20,7 @@
         th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"
       ></script>
 
-      <!-- checkbox table -->
-      <script th:src="@{/js/jquery.simple-checkbox-table.min.js}"></script>
-      <script type="text/javascript" th:src="@{/js/treeview.js}"></script>
+      <script type="text/javascript" th:src="@{/js/treeView.js}"></script>
 
       <link
         th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"
@@ -38,11 +36,11 @@
       <h1>Tree View Example</h1>
       <div>
         <div id="container">
-          <div class="organizationDto-box">
-            <div id="tree-view" class="organizationDto"></div>
+          <div class="organization-box">
+            <div id="tree-view" class="organization"></div>
           </div>
-          <div class="organizationDto-detail-box">
-            <div class="organizationDto-detail">
+          <div class="organization-detail-box">
+            <div class="organization-detail">
               <div id="user-data"></div>
               <table id="dataTable">
                 <thead>
@@ -68,7 +66,7 @@
       box-sizing: border-box;
     }
 
-    .organizationDto-box {
+    .organization-box {
       margin: 10px;
       width: 300px;
       height: 500px;
@@ -77,18 +75,18 @@
       box-sizing: border-box;
     }
 
-    .organizationDto {
+    .organization {
       box-sizing: border-box;
     }
 
-    .organizationDto-detail {
+    .organization-detail {
       margin: 10px;
       width: 60%;
       float: left;
       box-sizing: border-box;
     }
 
-    .organizationDto-detail input {
+    .organization-detail input {
       width: 50%;
       box-sizing: border-box;
     }

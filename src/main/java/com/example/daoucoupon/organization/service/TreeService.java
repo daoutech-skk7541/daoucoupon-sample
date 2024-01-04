@@ -34,7 +34,7 @@ public class TreeService {
                 .collect(groupingBy(organizationDto -> Optional.ofNullable(organizationDto.getParentId())));
 
         List<NodeDto> nodeDtos = createTree(organizationByParentId, Optional.empty());
-        rootNodeDto.setNodeDtos(nodeDtos);
+        rootNodeDto.setNodes(nodeDtos);
 
         return Collections.singletonList(rootNodeDto);
 
@@ -49,7 +49,7 @@ public class TreeService {
         return organizationDtos.stream().map(organizationDto -> NodeDto.builder()
                 .id(organizationDto.getId().toString())
                 .text(organizationDto.getOrganizationName())
-                .nodeDtos(createTree(organizationByParentId, Optional.of(organizationDto.getId())))
+                .nodes(createTree(organizationByParentId, Optional.of(organizationDto.getId())))
                 .build()).collect(Collectors.toList());
     }
 }

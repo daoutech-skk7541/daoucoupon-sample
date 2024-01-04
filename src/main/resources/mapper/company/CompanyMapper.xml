@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.daoucoupon.companyDto.repository.CompanyRepository">
+<mapper namespace="com.example.daoucoupon.company.repository.CompanyRepository">
     <!-- 모든 사용자 가져오기 -->
-    <select id="getCompanyById" resultType="com.example.daoucoupon.companyDto.dto.CompanyDto">
-        SELECT * FROM companyDto WHERE id = #{id}
+    <select id="getCompanyById" resultType="com.example.daoucoupon.company.dto.CompanyDto">
+        SELECT * FROM company WHERE id = #{id}
     </select>
 </mapper>

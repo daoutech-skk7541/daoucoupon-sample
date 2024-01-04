@@ -2,6 +2,8 @@ function drawTreeView(data) {
   $("#tree-view").bstreeview({
     data,
   })
+  // 첫번째 노드를 보여준다.
+  $("#tree-view-item-0").addClass("show")
 }
 
 function findNodesById(nodes, targetId) {
@@ -25,6 +27,50 @@ function findNodesById(nodes, targetId) {
   return null
 }
 
+function addCheckAllEvent() {
+  // set checkbox event
+  $("#checkAll").click(() => {
+    if ($("#checkAll").is(":checked")) {
+      $("input[name=tree-body]").prop("checked", true)
+    } else {
+      $("input[name=tree-body]").prop("checked", false)
+    }
+  })
+
+  $("input[name=tree-body]").click(() => {
+    if (
+      $("input[name=tree-body]:checked").length ===
+      $("input[name=tree-body]").length
+    ) {
+      $("#checkAll").prop("checked", true)
+    } else {
+      $("#checkAll").prop("checked", false)
+    }
+  })
+}
+
+function addCheckEvent(checkedUserIds) {
+  $("input[name=tree-body]").change(function () {
+    const userIdElement = $(this).parent().parent().find('td[class="userId"]')
+    const checked = $(this).is(":checked")
+
+    if (checked) {
+      // 체크된 table의 row 값 가져오기
+      const checkedUserId = userIdElement.text()
+      checkedUserIds.push(checkedUserId)
+    } else {
+      const userIdToRemove = userIdElement.text()
+      const index = checkedUserIds.indexOf(userIdToRemove)
+
+      if (index !== -1) {
+        checkedUserIds.splice(index, 1)
+      }
+    }
+
+    console.log(checkedUserIds)
+  })
+}
+
 function loadUserData(targetId) {
   $.ajax({
     url: `/api/users/${targetId}`,
@@ -36,9 +82,10 @@ function loadUserData(targetId) {
       $("#dataTable thead").empty()
       $("#dataTable thead").append(
         "<th>" +
-          '<input type="checkbox" />' +
+          '<input type="checkbox" id="checkAll"/>' +
           "</th>" +
           "<th>조직ID</th>" +
+          "<th>유저ID</th>" +
           "<th>Name</th>" +
           "<th>e-mail</th>" +
           "<th>생성일</th>",
@@ -50,21 +97,27 @@ function loadUserData(targetId) {
         const user = data[i]
         $("#dataTable tbody").append(
           "<tr>" +
-            '<td><input type="checkbox"></td>' +
-            `<td>${user.organizationId}</td>` +
-            `<td>${user.username}</td>` +
-            `<td>${user.email}</td>` +
-            `<td>${user.createdAt}</td>` +
+            '<td><input type="checkbox" name="tree-body"></td>' +
+            `<td class='organizationId'>${user.organizationId}</td>` +
+            `<td class='userId'>${user.id}</td>` +
+            `<td class='username'>${user.username}</td>` +
+            `<td class='email'>${user.email}</td>` +
+            `<td class='createdAt'>${user.createdAt}</td>` +
             "</tr>",
         )
       }
+
+      const checkedUserIds = []
+
+      addCheckAllEvent()
+      addCheckEvent(checkedUserIds)
     })
     .fail(() => {
       alert("User Data Error!")
     })
 }
 
-function addClickEvent(data) {
+function addGroupClickEvent(data) {
   $(".list-group-item").on("click", function () {
     const nodes = findNodesById(data, this.id)
     if (nodes === null) {
@@ -81,7 +134,7 @@ function initializeTreeView() {
   })
     .done((data) => {
       drawTreeView(data)
-      addClickEvent(data)
+      addGroupClickEvent(data)
     })
     .fail(() => {
       alert("Tree Data Error!")

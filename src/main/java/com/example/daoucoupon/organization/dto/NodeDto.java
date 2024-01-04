@@ -18,7 +18,7 @@ public class NodeDto {
     private String text;
     private boolean expanded;
     private String icon;
-    private List<NodeDto> nodeDtos;
+    private List<NodeDto> nodes;
     @JsonProperty("class")
     private String className;
     private String href;
