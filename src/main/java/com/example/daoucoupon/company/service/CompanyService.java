@@ -1,19 +1,16 @@
 package com.example.daoucoupon.company.service;
 
-import com.example.daoucoupon.company.model.Company;
-import com.example.daoucoupon.mapper.CompanyMapper;
-import com.example.daoucoupon.user.model.User;
+import com.example.daoucoupon.company.dto.CompanyDto;
+import com.example.daoucoupon.company.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
-    private final CompanyMapper companyMapper;
+    private final CompanyRepository companyRepository;
 
-    public Company getCompanyById(Long companyId) {
-        return companyMapper.getCompanyById(companyId);
+    public CompanyDto getCompanyById(Long companyId) {
+        return companyRepository.getCompanyById(companyId);
     }
 }

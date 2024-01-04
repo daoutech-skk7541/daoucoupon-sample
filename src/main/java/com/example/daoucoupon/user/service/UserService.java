@@ -1,7 +1,7 @@
 package com.example.daoucoupon.user.service;
 
-import com.example.daoucoupon.mapper.UserMapper;
-import com.example.daoucoupon.user.model.User;
+import com.example.daoucoupon.user.repository.UserRepository;
+import com.example.daoucoupon.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +12,14 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
 
-    public List<User> getAllUsers() {
-        return userMapper.getAllUsers();
+    public List<UserDto> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
-    public List<User> getAllUsersByOrganizationId(Long organizationId) {
-        return userMapper.getAllUsersByOrganizationId(organizationId);
+    public List<UserDto> getAllUsersByOrganizationId(Long organizationId) {
+        return userRepository.getAllUsersByOrganizationId(organizationId);
     }
 }

@@ -1,9 +1,9 @@
 package com.example.daoucoupon.organization.service;
 
-import com.example.daoucoupon.company.model.Company;
+import com.example.daoucoupon.company.dto.CompanyDto;
 import com.example.daoucoupon.company.service.CompanyService;
-import com.example.daoucoupon.organization.model.Node;
-import com.example.daoucoupon.organization.model.Organization;
+import com.example.daoucoupon.organization.dto.NodeDto;
+import com.example.daoucoupon.organization.dto.OrganizationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,38 +18,38 @@ public class TreeService {
     private final OrganizationService organizationService;
     private final CompanyService companyService;
 
-    public List<Node> getTreeInfoByCompanyId(Long companyId) {
-        Company company = companyService.getCompanyById(companyId);
-        List<Organization> organizations = organizationService.getOrganizationsByCompanyId(companyId);
+    public List<NodeDto> getTreeInfoByCompanyId(Long companyId) {
+        CompanyDto companyDto = companyService.getCompanyById(companyId);
+        List<OrganizationDto> organizationDtos = organizationService.getOrganizationsByCompanyId(companyId);
 
         // 회사
-        Node rootNode = Node.builder()
-                .id("0").text(company.getCompanyName())
+        NodeDto rootNodeDto = NodeDto.builder()
+                .id("0").text(companyDto.getCompanyName())
                 .icon("fa fa-folder")
                 .expanded(true)
                 .build();
 
         // 조직
-        Map<Optional<Long>, List<Organization>> organizationByParentId = organizations.stream()
-                .collect(groupingBy(organization -> Optional.ofNullable(organization.getParentId())));
+        Map<Optional<Long>, List<OrganizationDto>> organizationByParentId = organizationDtos.stream()
+                .collect(groupingBy(organizationDto -> Optional.ofNullable(organizationDto.getParentId())));
 
-        List<Node> nodes = createTree(organizationByParentId, Optional.empty());
-        rootNode.setNodes(nodes);
+        List<NodeDto> nodeDtos = createTree(organizationByParentId, Optional.empty());
+        rootNodeDto.setNodeDtos(nodeDtos);
 
-        return Collections.singletonList(rootNode);
+        return Collections.singletonList(rootNodeDto);
 
     }
 
-    private List<Node> createTree(Map<Optional<Long>, List<Organization>> organizationByParentId, Optional<Long> parentId) {
-        List<Organization> organizations = organizationByParentId.get(parentId);
-        if (organizations == null) {
+    private List<NodeDto> createTree(Map<Optional<Long>, List<OrganizationDto>> organizationByParentId, Optional<Long> parentId) {
+        List<OrganizationDto> organizationDtos = organizationByParentId.get(parentId);
+        if (organizationDtos == null) {
             return null;
         }
 
-        return organizations.stream().map(organization -> Node.builder()
-                .id(organization.getId().toString())
-                .text(organization.getOrganizationName())
-                .nodes(createTree(organizationByParentId, Optional.of(organization.getId())))
+        return organizationDtos.stream().map(organizationDto -> NodeDto.builder()
+                .id(organizationDto.getId().toString())
+                .text(organizationDto.getOrganizationName())
+                .nodeDtos(createTree(organizationByParentId, Optional.of(organizationDto.getId())))
                 .build()).collect(Collectors.toList());
     }
 }

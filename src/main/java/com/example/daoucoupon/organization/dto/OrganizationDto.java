@@ -1,4 +1,4 @@
-package com.example.daoucoupon.organization.model;
+package com.example.daoucoupon.organization.dto;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Organization {
+public class OrganizationDto {
     private Long id;
     private String organizationName;
     private Long parentId;

@@ -1,4 +1,4 @@
-package com.example.daoucoupon.organization.model;
+package com.example.daoucoupon.organization.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,13 +12,13 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Node {
+public class NodeDto {
 
     private String id;
     private String text;
     private boolean expanded;
     private String icon;
-    private List<Node> nodes;
+    private List<NodeDto> nodeDtos;
     @JsonProperty("class")
     private String className;
     private String href;

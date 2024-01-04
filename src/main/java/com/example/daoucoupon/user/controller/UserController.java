@@ -1,17 +1,13 @@
 package com.example.daoucoupon.user.controller;
 
-import com.example.daoucoupon.user.model.User;
+import com.example.daoucoupon.user.dto.UserDto;
 import com.example.daoucoupon.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +15,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user-data/{organizationId}")
-    public List<User> getUserData(@PathVariable Long organizationId) {
+    public List<UserDto> getUserData(@PathVariable Long organizationId) {
         return userService.getAllUsersByOrganizationId(organizationId);
     }
 
@@ -33,12 +29,12 @@ public class UserController {
 //    }
 
     @GetMapping("/api/users")
-    public List<User> getUsers() {
+    public List<UserDto> getUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/api/users/{organizationId}")
-    public List<User> getUsersByOrganizationId(@PathVariable(name = "organizationId") Long organizationId) {
+    public List<UserDto> getUsersByOrganizationId(@PathVariable(name = "organizationId") Long organizationId) {
         return userService.getAllUsersByOrganizationId(organizationId);
     }
 }

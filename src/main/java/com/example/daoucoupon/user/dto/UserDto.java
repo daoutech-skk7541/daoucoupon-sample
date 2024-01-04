@@ -1,4 +1,4 @@
-package com.example.daoucoupon.user.model;
+package com.example.daoucoupon.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
-public class User {
+public class UserDto {
     private Long id;
     private Long organizationId;
     private String username;
     private String email;
     private LocalDateTime createdAt;
 
-    public User(Long id, Long organizationId, String username, String email, LocalDateTime createdAt) {
+    public UserDto(Long id, Long organizationId, String username, String email, LocalDateTime createdAt) {
         this.id = id;
         this.organizationId = organizationId;
         this.username = username;

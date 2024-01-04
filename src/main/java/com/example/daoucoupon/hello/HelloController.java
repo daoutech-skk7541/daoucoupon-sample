@@ -17,9 +17,6 @@ public class HelloController {
         return "signup";
     }
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        return "index";
-    }
+
 
 }

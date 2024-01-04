@@ -1,7 +1,7 @@
 package com.example.daoucoupon.organization.service;
 
-import com.example.daoucoupon.mapper.OrganizationMapper;
-import com.example.daoucoupon.organization.model.Organization;
+import com.example.daoucoupon.organization.dto.OrganizationDto;
+import com.example.daoucoupon.organization.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +10,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrganizationService {
-    private final OrganizationMapper organizationMapper;
+    private final OrganizationRepository organizationRepository;
 
-    public List<Organization> getAllOrganizations() {
-        return organizationMapper.getAllOrganization();
-    }
-    public List<Organization> getOrganizationsByCompanyId(Long companyId) {
-        return organizationMapper.getOrganizationsByCompanyId(companyId);
-    }
-
-    public Organization getOrganizationById(Long organizationId) {
-        return organizationMapper.getOrganizationById(organizationId);
+    public List<OrganizationDto> getOrganizationsByCompanyId(Long companyId) {
+        return organizationRepository.getOrganizationsByCompanyId(companyId);
     }
 }
